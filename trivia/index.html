@@ -1,31 +1,207 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
-        <link href="styles.css" rel="stylesheet">
-        <title>Trivia!</title>
-        <script>
-            // TODO: Add code to check answers to questions
-        </script>
-    </head>
-    <body>
-        <div class="header">
-            <h1>Trivia!</h1>
-        </div>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link href="styles.css" rel="stylesheet" />
+    <title>Trivia!</title>
+    <script>
+      const questions = [
+        {
+          Question: "What is the capital of France?",
+          Options: ["Paris", "London", "Berlin"],
+          Correct_answer: "Paris",
+        },
+        {
+          Question: "Who painted the Mona Lisa?",
+          Options: ["Leonardo da Vinci", "Pablo Picasso", "Vincent van Gogh"],
+          Correct_answer: "Leonardo da Vinci",
+        },
+        {
+          Question: "What is the largest planet in our solar system?",
+          Options: ["Saturn", "Jupiter", "Mars"],
+          Correct_answer: "Jupiter",
+        },
+        {
+          Question: "Who wrote 'To Kill a Mockingbird'?",
+          Options: ["Harper Lee", "J.K. Rowling", "Stephen King"],
+          Correct_answer: "Harper Lee",
+        },
+        {
+          Question: "Which continent is the least populated?",
+          Options: ["Africa", "Australia", "Antarctica"],
+          Correct_answer: "Antarctica",
+        },
+        {
+          Question: "What is the chemical symbol for water?",
+          Options: ["W", "H2O", "O2"],
+          Correct_answer: "H2O",
+        },
+        {
+          Question: "Who was the first person to step on the moon?",
+          Options: ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin"],
+          Correct_answer: "Neil Armstrong",
+        },
+        {
+          Question: "What is the main ingredient in guacamole?",
+          Options: ["Tomato", "Avocado", "Onion"],
+          Correct_answer: "Avocado",
+        },
+        {
+          Question: "What is the tallest mammal?",
+          Options: ["Elephant", "Giraffe", "Hippopotamus"],
+          Correct_answer: "Giraffe",
+        },
+        {
+          Question: "Which planet is known as the Red Planet?",
+          Options: ["Venus", "Mars", "Mercury"],
+          Correct_answer: "Mars",
+        },
+        {
+          Question: "Who discovered penicillin?",
+          Options: ["Alexander Fleming", "Louis Pasteur", "Marie Curie"],
+          Correct_answer: "Alexander Fleming",
+        },
+        {
+          Question: "What is the chemical symbol for gold?",
+          Options: ["Au", "Ag", "Pt"],
+          Correct_answer: "Au",
+        },
+        {
+          Question: "Who wrote 'Romeo and Juliet'?",
+          Options: ["William Shakespeare", "Charles Dickens", "Jane Austen"],
+          Correct_answer: "William Shakespeare",
+        },
+        {
+          Question: "What is the largest ocean on Earth?",
+          Options: ["Atlantic Ocean", "Indian Ocean", "Pacific Ocean"],
+          Correct_answer: "Pacific Ocean",
+        },
+        {
+          Question: "What is the primary ingredient in chocolate?",
+          Options: ["Sugar", "Cocoa Beans", "Milk"],
+          Correct_answer: "Cocoa Beans",
+        },
+        {
+          Question: "Who was the first woman to win a Nobel Prize?",
+          Options: ["Marie Curie", "Rosalind Franklin", "Dorothy Hodgkin"],
+          Correct_answer: "Marie Curie",
+        },
+        {
+          Question: "What is the hardest natural substance on Earth?",
+          Options: ["Diamond", "Iron", "Quartz"],
+          Correct_answer: "Diamond",
+        },
+        {
+          Question: "Which planet is known as the Morning Star?",
+          Options: ["Venus", "Mercury", "Jupiter"],
+          Correct_answer: "Venus",
+        },
+        {
+          Question: "What is the largest organ in the human body?",
+          Options: ["Heart", "Liver", "Skin"],
+          Correct_answer: "Skin",
+        },
+        {
+          Question: "Who invented the telephone?",
+          Options: ["Thomas Edison", "Alexander Graham Bell", "Nikola Tesla"],
+          Correct_answer: "Alexander Graham Bell",
+        },
+        {
+          Question: "What is the chemical symbol for iron?",
+          Options: ["Fe", "Ir", "In"],
+          Correct_answer: "Fe",
+        },
+      ];
 
-        <div class="container">
-            <div class="section">
-                <h2>Part 1: Multiple Choice </h2>
-                <hr>
-                <!-- TODO: Add multiple choice question here -->
-            </div>
+      let currentIndex = 0;
 
-            <div class="section">
-                <h2>Part 2: Free Response</h2>
-                <hr>
-                <!-- TODO: Add free response question here -->
-            </div>
-        </div>
-    </body>
+      function changeQuestion(ind) {
+        if (ind == 20) {
+          document.querySelector("#feedback1").innerHTML =
+            "Good Job! Thats All For now.";
+          return;
+        }
+        document.querySelector(".question").innerHTML =
+          questions[ind]['Question'];
+        document.querySelector(".correct").innerHTML =
+          questions[ind]['Correct_answer'];
+        document.querySelector(".correct").style.backgroundColor = "#d9edff";
+        let incorrects = document.querySelectorAll(".incorrect");
+        let j = 0;
+        for (let i = 0; i < incorrects.length; i++) {
+          if (questions[ind]['Options'][j] == questions[ind]['Correct_answer']) {
+            j++;
+          }
+          incorrects[i].innerHTML = questions[ind]['Options'][j++];
+          incorrects[i].style.backgroundColor = "#d9edff";
+        }
+        document.querySelector("#feedback1").innerHTML = "";
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        let correct = document.querySelector(".correct");
+        correct.addEventListener("click", function () {
+          correct.style.backgroundColor = "green";
+          document.querySelector("#feedback1").innerHTML = "Correct!";
+          setTimeout(() => {
+            changeQuestion(currentIndex++);
+          }, 2000);
+        });
+        let incorrects = document.querySelectorAll(".incorrect");
+        for (let i = 0; i < incorrects.length; i++) {
+          incorrects[i].addEventListener("click", function () {
+            incorrects[i].style.backgroundColor = "red";
+            document.querySelector("#feedback1").innerHTML = "Incorrect!";
+          });
+        }
+        let ans = document.querySelector("#check");
+        ans.addEventListener("click", function () {
+          let input = document.querySelector(".input");
+          if (input.value.toLowerCase() == "the who") {
+            input.style.backgroundColor = "green";
+            document.querySelector("#feedback2").innerHTML = "Correct!";
+          } else {
+            input.style.backgroundColor = "red";
+            document.querySelector("#feedback2").innerHTML = "Incorrect!";
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Trivia!</h1>
+    </div>
+
+    <div class="container">
+      <div class="section">
+        <h2>Part 1: Multiple Choice</h2>
+        <hr />
+        <h3 class="question">
+          Which flies a green, white, and orange (in that order) tricolor flag?
+        </h3>
+        <button class="correct">Ireland</button>
+        <button class="incorrect">Ivory Coast</button>
+        <button class="incorrect">Italy</button>
+        <hr />
+        <h4 id="feedback1"></h4>
+      </div>
+
+      <div class="section">
+        <h2>Part 2: Free Response</h2>
+        <hr />
+        <h3>
+          What English rock band was infamous for smashing up hotel rooms and
+          musical equipment?
+        </h3>
+        <input type="text" name="FreeResponse" class="input" />
+        <button id="check">Check Answer</button>
+        <hr />
+        <h4 id="feedback2"></h4>
+      </div>
+    </div>
+  </body>
 </html>
