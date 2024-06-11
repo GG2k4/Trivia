@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
   <head>
     <link
@@ -119,47 +118,60 @@
 
       let currentIndex = 0;
 
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+
       function changeQuestion(ind) {
-        if (ind == 20) {
-          document.querySelector("#feedback1").innerHTML =
-            "Good Job! Thats All For now.";
+        if (ind >= questions.length) {
+          document.querySelector("#feedback1").innerHTML = "Good Job! That's all for now.";
           return;
         }
-        document.querySelector(".question").innerHTML =
-          questions[ind]['Question'];
-        document.querySelector(".correct").innerHTML =
-          questions[ind]['Correct_answer'];
-        document.querySelector(".correct").style.backgroundColor = "#d9edff";
-        let incorrects = document.querySelectorAll(".incorrect");
-        let j = 0;
-        for (let i = 0; i < incorrects.length; i++) {
-          if (questions[ind]['Options'][j] == questions[ind]['Correct_answer']) {
-            j++;
+        const question = questions[ind];
+        const options = shuffle([...question.Options]);
+        
+        document.querySelector(".question").innerHTML = question.Question;
+        const buttons = document.querySelectorAll(".option-button");
+        
+        buttons.forEach((button, i) => {
+          button.innerHTML = options[i];
+          button.style.backgroundColor = "#d9edff";
+          button.classList.remove("correct", "incorrect");
+          if (options[i] === question.Correct_answer) {
+            button.classList.add("correct");
+          } else {
+            button.classList.add("incorrect");
           }
-          incorrects[i].innerHTML = questions[ind]['Options'][j++];
-          incorrects[i].style.backgroundColor = "#d9edff";
-        }
+        });
+        
         document.querySelector("#feedback1").innerHTML = "";
       }
+
       document.addEventListener("DOMContentLoaded", function () {
-        let correct = document.querySelector(".correct");
-        correct.addEventListener("click", function () {
-          correct.style.backgroundColor = "green";
-          document.querySelector("#feedback1").innerHTML = "Correct!";
-          setTimeout(() => {
-            changeQuestion(currentIndex++);
-          }, 2000);
-        });
-        let incorrects = document.querySelectorAll(".incorrect");
-        for (let i = 0; i < incorrects.length; i++) {
-          incorrects[i].addEventListener("click", function () {
-            incorrects[i].style.backgroundColor = "red";
-            document.querySelector("#feedback1").innerHTML = "Incorrect!";
+        const buttons = document.querySelectorAll(".option-button");
+        
+        buttons.forEach(button => {
+          button.addEventListener("click", function () {
+            if (button.classList.contains("correct")) {
+              button.style.backgroundColor = "green";
+              document.querySelector("#feedback1").innerHTML = "Correct!";
+              setTimeout(() => {
+                changeQuestion(++currentIndex);
+              }, 2000);
+            } else {
+              button.style.backgroundColor = "red";
+              document.querySelector("#feedback1").innerHTML = "Incorrect!";
+            }
           });
-        }
-        let ans = document.querySelector("#check");
+        });
+
+        const ans = document.querySelector("#check");
         ans.addEventListener("click", function () {
-          let input = document.querySelector(".input");
+          const input = document.querySelector(".input");
           if (input.value.toLowerCase() == "the who") {
             input.style.backgroundColor = "green";
             document.querySelector("#feedback2").innerHTML = "Correct!";
@@ -168,6 +180,8 @@
             document.querySelector("#feedback2").innerHTML = "Incorrect!";
           }
         });
+
+        changeQuestion(currentIndex);
       });
     </script>
   </head>
@@ -183,9 +197,11 @@
         <h3 class="question">
           Which flies a green, white, and orange (in that order) tricolor flag?
         </h3>
-        <button class="correct">Ireland</button>
-        <button class="incorrect">Ivory Coast</button>
-        <button class="incorrect">Italy</button>
+        <div class="button-container">
+          <button class="option-button correct">Ireland</button>
+          <button class="option-button incorrect">Ivory Coast</button>
+          <button class="option-button incorrect">Italy</button>
+        </div>
         <hr />
         <h4 id="feedback1"></h4>
       </div>
